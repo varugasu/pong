@@ -9,7 +9,8 @@ extends Node2D
 @export var circle_segments = 48
 @export var line_thickness = 2.0
 
-
+@export var override_rotation_angle = false
+@export var override_rotation_angle_value = 0.0
 var rotation_angle = 0.0
 
 var screen_size = Vector2.ZERO
@@ -43,7 +44,9 @@ func _draw() -> void:
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
-		delta = 0.5
-	rotation_angle += rotation_multiplier * delta
+		delta = 0.005
+	rotation_angle += rotation_multiplier * delta * 200
 	rotation_angle = fmod(rotation_angle, TAU)
+	if override_rotation_angle:
+		rotation_angle = deg_to_rad(override_rotation_angle_value)
 	queue_redraw()

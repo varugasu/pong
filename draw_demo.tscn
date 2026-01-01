@@ -5,10 +5,11 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2(209, 150)
+position = Vector2(243, 172)
 script = ExtResource("1_jijpn")
 radius = 100.0
-arc2_color = Color(0, 0, 1, 1)
 rotation_multiplier = 0.015
 line_thickness = 2.045
+override_rotation_angle = true
+velocity = Vector2(1, 0)
 show_velocity = true
