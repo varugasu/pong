@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgu2k2r7ssl03"]
+
+[ext_resource type="Script" uid="uid://ia5egut6syio" path="res://scripts/ball_draw_demo.gd" id="1_jijpn"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(209, 150)
+script = ExtResource("1_jijpn")
+radius = 100.0
+arc2_color = Color(0, 0, 1, 1)
+rotation_multiplier = 0.015
+line_thickness = 2.045
+show_velocity = true

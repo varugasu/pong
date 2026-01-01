@@ -15,10 +15,6 @@ run/main_scene="uid://dtchwqlmtjm83"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
-[autoload]
-
-GameManager="*res://scenes/game_manager.tscn"
-
 [dotnet]
 
 project/assembly_name="pong"

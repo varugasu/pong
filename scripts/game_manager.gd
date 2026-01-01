@@ -4,20 +4,14 @@ extends Node
 var bottom_paddle_score = 0
 var top_paddle_score = 0
 
-var current_scene: Node2D = null
-var bottom_paddle: Paddle = null
-var top_paddle: Paddle = null
-var ball: Ball = null
+@export var bottom_paddle: Paddle
+@export var top_paddle: Paddle
+@export var ball: Ball
+
 var screen_size = Vector2.ZERO
 
 func _ready() -> void:
-	current_scene = get_tree().root.get_child(-1)
-	
 	screen_size = get_viewport().get_visible_rect().size
-	top_paddle = current_scene.get_node("TopPaddle")
-	bottom_paddle = current_scene.get_node("BottomPaddle")
-	ball = current_scene.get_node("Ball")
-
 	ball.scored.connect(_on_scored)
 
 	_reset_objects()

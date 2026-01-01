@@ -4,10 +4,12 @@ class_name Ball
 extends Node2D
 
 @export var radius = 10.0
+# Rendering 
 @export var color = Color.RED
 @export var rotation_multiplier = 0.01
 @export var circle_segments = 48
 @export var line_thickness = 2.0
+
 @export var initial_speed = 200.0
 @export var velocity = Vector2.ZERO
 @export var bouncing_speed_multiplier = 5.0
