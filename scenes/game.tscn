@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dtchwqlmtjm83"]
+[gd_scene load_steps=4 format=3 uid="uid://dtchwqlmtjm83"]
 
 [ext_resource type="PackedScene" uid="uid://b0nv0qmpemoof" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://dhabs3fxf4gxp" path="res://scenes/ball.tscn" id="2_yqjtg"]
+[ext_resource type="Script" uid="uid://ccjv6tvm1mjof" path="res://scripts/paddle.gd" id="3_lnu2h"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 position = Vector2(551, 507)
+color = Color(0.47278643, 0.81563526, 0, 1)
 
 [node name="Ball" parent="." instance=ExtResource("2_yqjtg")]
 position = Vector2(602, 360)
@@ -14,3 +16,10 @@ rotation_multiplier = 0.005
 velocity = Vector2(500, 3000)
 bouncing_speed_multiplier = 1.2
 max_speed = 3000.0
+debug_mode = true
+
+[node name="Enemy" type="Node2D" parent="."]
+rotation = -0.0002379664
+script = ExtResource("3_lnu2h")
+color = Color(0.7453724, 0.7356707, 0.4232481, 1)
+metadata/_custom_type_script = "uid://ccjv6tvm1mjof"

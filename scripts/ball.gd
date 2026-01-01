@@ -1,4 +1,6 @@
 @tool
+
+class_name Ball
 extends Node2D
 
 @export var radius = 10.0
@@ -16,6 +18,13 @@ extends Node2D
 var rotation_angle = 0.0
 
 var screen_size = Vector2.ZERO
+
+enum Side {
+	TOP,
+	BOTTOM
+}
+
+signal scored(side: Side)
 
 func _draw() -> void:
 	var velocity_angle = velocity.angle()
@@ -45,18 +54,19 @@ func _draw() -> void:
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	
 	screen_size = get_viewport_rect().size
-	
-	var angle = 2 * PI * randf()
-	velocity = Vector2(cos(angle), sin(angle)) * initial_speed
 
+func random_launch():
+	var angle = TAU * randf()
+	velocity = Vector2(cos(angle), sin(angle)) * initial_speed
 
 func _update_wall_collision() -> void:
 	if position.x - radius <= 0.0 or position.x + radius >= screen_size.x:
 		velocity.x = - velocity.x * randf_range(1, bouncing_speed_multiplier)
-	if position.y - radius <= 0.0 or position.y + radius >= screen_size.y:
-		velocity.y = - velocity.y * randf_range(1, bouncing_speed_multiplier)
+	if position.y - radius <= 0.0:
+		scored.emit(Side.BOTTOM)
+	if position.y + radius >= screen_size.y:
+		scored.emit(Side.TOP)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
