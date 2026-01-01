@@ -13,6 +13,11 @@ extends Node2D
 @export var bouncing_speed_multiplier = 5.0
 @export var bouncing_angle_deviation = 15.0
 @export var max_speed = 5000.0
+@export var max_bounce_angle = deg_to_rad(75)
+
+@export var top_paddle: Paddle
+@export var bottom_paddle: Paddle
+var bounce_cooldodwn = 0.0
 
 @export var debug_mode = false
 
@@ -72,10 +77,45 @@ func _update_wall_collision() -> void:
 		scored.emit(Side.TOP)
 
 
+func _check_paddle_collision(paddle: Paddle) -> bool:
+	var ball_rect = Rect2(position.x - radius, position.y - radius, radius * 2, radius * 2)
+	var paddle_rect = Rect2(paddle.position.x, paddle.position.y, paddle.width, paddle.height)
+
+	return ball_rect.intersects(paddle_rect)
+
+func _handle_paddle_bounce(paddle: Paddle) -> void:
+	var paddle_center_x = paddle.position.x + paddle.width / 2.0
+	var hit_pos = (position.x - paddle_center_x) / (paddle.width / 2.0)
+	hit_pos = clamp(hit_pos, -1.0, 1.0)
+
+	var bounce_angle = hit_pos * deg_to_rad(max_bounce_angle)
+	var y_direction = -1 if paddle == bottom_paddle else 1
+
+	var new_speed = velocity.length() * bouncing_speed_multiplier
+
+	var angle_deviation = deg_to_rad(randf_range(-bouncing_angle_deviation, bouncing_angle_deviation))
+	bounce_angle += angle_deviation
+
+	velocity = Vector2(sin(bounce_angle), y_direction * cos(bounce_angle)) * new_speed
+
+	bounce_cooldodwn = 0.1
+
+func _update_paddle_collisions(delta: float) -> void:
+	if bounce_cooldodwn > 0.0:
+		bounce_cooldodwn -= delta
+		return
+
+	if _check_paddle_collision(top_paddle):
+		_handle_paddle_bounce(top_paddle)
+	elif _check_paddle_collision(bottom_paddle):
+		_handle_paddle_bounce(bottom_paddle)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+		
+	_update_paddle_collisions(delta)
 	_update_wall_collision()
 	
 	rotation_angle += velocity.length() * rotation_multiplier * delta

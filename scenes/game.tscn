@@ -7,19 +7,23 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="BottomPaddle" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(551, 507)
+position = Vector2(551, 608)
 color = Color(0.47278643, 0.81563526, 0, 1)
 
-[node name="Ball" parent="." instance=ExtResource("2_yqjtg")]
+[node name="TopPaddle" type="Node2D" parent="."]
+position = Vector2(532, 4)
+rotation = -0.0002379664
+script = ExtResource("3_lnu2h")
+color = Color(0.7453724, 0.7356707, 0.4232481, 1)
+metadata/_custom_type_script = "uid://ccjv6tvm1mjof"
+
+[node name="Ball" parent="." node_paths=PackedStringArray("top_paddle", "bottom_paddle") instance=ExtResource("2_yqjtg")]
 position = Vector2(602, 360)
 rotation_multiplier = 0.005
 velocity = Vector2(500, 3000)
 bouncing_speed_multiplier = 1.2
 max_speed = 3000.0
+max_bounce_angle = 75.0
+top_paddle = NodePath("../TopPaddle")
+bottom_paddle = NodePath("../BottomPaddle")
 debug_mode = true
-
-[node name="TopPaddle" type="Node2D" parent="."]
-rotation = -0.0002379664
-script = ExtResource("3_lnu2h")
-color = Color(0.7453724, 0.7356707, 0.4232481, 1)
-metadata/_custom_type_script = "uid://ccjv6tvm1mjof"
