@@ -8,6 +8,6 @@
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 position = Vector2(551, 507)
 
-[node name="Node2D" parent="." instance=ExtResource("2_yqjtg")]
-position = Vector2(597, 406)
-circle_segments = 12
+[node name="Ball" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(602, 360)
+speed = 200.0
