@@ -6,10 +6,14 @@ extends Node2D
 @export var rotation_multiplier = 0.01
 @export var circle_segments = 48
 @export var line_thickness = 2.0
-@export var speed = 200.0
+@export var initial_speed = 200.0
+@export var velocity = Vector2.ZERO
+@export var bouncing_speed_multiplier = 5.0
+@export var max_speed = 5000.0
 
 var rotation_angle = 0.0
-var velocity = Vector2.ZERO
+
+var screen_size = Vector2.ZERO
 
 func _draw() -> void:
 	var arc_points1: Array[Vector2] = []
@@ -30,17 +34,32 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
+	screen_size = get_viewport_rect().size
+	
 	var angle = 2 * PI * randf()
-	velocity = Vector2(cos(angle), sin(angle)) * speed
+	velocity = Vector2(cos(angle), sin(angle)) * initial_speed
+
+
+func _update_wall_collision() -> void:
+	if position.x - radius <= 0.0 or position.x + radius >= screen_size.x:
+		velocity.x = - velocity.x * randf_range(1, bouncing_speed_multiplier)
+	if position.y - radius <= 0.0 or position.y + radius >= screen_size.y:
+		velocity.y = - velocity.y * randf_range(1, bouncing_speed_multiplier)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	_update_wall_collision()
 	
 	rotation_angle += velocity.y * rotation_multiplier * delta
 	rotation_angle = fmod(rotation_angle, TAU)
 
+	if velocity.length() > max_speed:
+		velocity = velocity.normalized() * max_speed
+
 	position += velocity * delta
 
+	
 	queue_redraw()
