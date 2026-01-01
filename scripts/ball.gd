@@ -11,6 +11,7 @@ extends Node2D
 @export var initial_speed = 200.0
 @export var velocity = Vector2.ZERO
 @export var bouncing_speed_multiplier = 5.0
+@export var bouncing_angle_deviation = 15.0
 @export var max_speed = 5000.0
 
 @export var debug_mode = false
@@ -63,6 +64,8 @@ func random_launch():
 func _update_wall_collision() -> void:
 	if position.x - radius <= 0.0 or position.x + radius >= screen_size.x:
 		velocity.x = - velocity.x * randf_range(1, bouncing_speed_multiplier)
+		var angle_deviation = deg_to_rad(randf_range(-bouncing_angle_deviation, bouncing_angle_deviation))
+		velocity = velocity.rotated(angle_deviation)
 	if position.y - radius <= 0.0:
 		scored.emit(Side.BOTTOM)
 	if position.y + radius >= screen_size.y:
