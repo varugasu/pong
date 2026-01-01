@@ -10,6 +10,7 @@ position = Vector2(551, 507)
 
 [node name="Ball" parent="." instance=ExtResource("2_yqjtg")]
 position = Vector2(602, 360)
+rotation_multiplier = 0.005
 velocity = Vector2(500, 3000)
 bouncing_speed_multiplier = 1.2
 max_speed = 3000.0

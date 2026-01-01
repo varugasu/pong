@@ -11,24 +11,36 @@ extends Node2D
 @export var bouncing_speed_multiplier = 5.0
 @export var max_speed = 5000.0
 
+@export var debug_mode = false
+
 var rotation_angle = 0.0
 
 var screen_size = Vector2.ZERO
 
 func _draw() -> void:
+	var velocity_angle = velocity.angle()
+	# rotates the coordinate system
+	# draw_set_transform(Vector2.ZERO, velocity_angle, Vector2.ONE)
+
 	var arc_points1: Array[Vector2] = []
 	var arc_points2: Array[Vector2] = []
 	for i in circle_segments + 1:
 		var theta = (i / float(circle_segments)) * TAU
-		var x_3d = radius * cos(theta)
-		var y_3d = radius * sin(theta)
+		var x = radius * cos(theta)
+		var y = radius * sin(theta)
+
+		var p1 = Vector2(x * cos(rotation_angle), y).rotated(velocity_angle)
+		var p2 = Vector2(x * cos(rotation_angle + PI / 2), y).rotated(velocity_angle)
 
 
-		arc_points1.append(Vector2(x_3d, y_3d * cos(rotation_angle)))
-		arc_points2.append(Vector2(x_3d, y_3d * cos(rotation_angle + PI / 2)))
+		arc_points1.append(p1)
+		arc_points2.append(p2)
 	
 	draw_polyline(arc_points1, color, line_thickness)
 	draw_polyline(arc_points2, color, line_thickness)
+	if debug_mode:
+		draw_line(Vector2.ZERO, velocity.normalized() * radius * 2, Color.YELLOW, 2.0)
+
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
@@ -53,7 +65,7 @@ func _process(delta: float) -> void:
 		return
 	_update_wall_collision()
 	
-	rotation_angle += velocity.y * rotation_multiplier * delta
+	rotation_angle += velocity.length() * rotation_multiplier * delta
 	rotation_angle = fmod(rotation_angle, TAU)
 
 	if velocity.length() > max_speed:
